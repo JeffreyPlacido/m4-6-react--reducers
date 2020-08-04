@@ -309,20 +309,36 @@ const LightSwitch = () => {
 
 ```jsx
 // Exercise 2
+
+const reducer =(state, action) {
+switch (action.type) {
+  case 'REQUEST-DATA':
+    return'loading';
+
+  case 'RECIEVE-DATA':
+    return 'idle';
+
+  case 'RECEIVE-ERROR':
+    return 'error';
+    default: throw new Error ('Unrecognized action');
+  }
+}
+}
+
 function App() {
-  const [status, setStatus] = React.useState("idle");
+  const [state, dispatch] = React.useReducer(reducer, 'idle' );
 
   return (
     <form
       onSubmit={() => {
-        setStatus("loading");
+        dispatch({type: 'REQUEST-DATA'});
 
         getStatusFromServer()
           .then(() => {
-            setStatus("idle");
+            dispatch({type: 'RECIEVE-DATA'});
           })
           .catch(() => {
-            setStatus("error");
+            dispatch(type: 'RECIEVE-ERROR);
           });
       }}
     >
@@ -503,9 +519,12 @@ Update these objects to use `useReducer`, with a single immutable object
 
 ```jsx
 // Exercise 4
+
+const reducer = (state, action) => {};
+
 const Game = () => {
-  const [points, setPoints] = React.useState(0);
-  const [status, setStatus] = React.useState("idle");
+  const [state, dispatch] = React.useState(0);
+  const [state, dispatch] = React.useState("idle");
 
   return (
     <>
@@ -530,6 +549,10 @@ const Game = () => {
 // Exercise 5
 import sendDataToServer from "./some-madeup-place";
 import FormField from "./some-other-madeup-place";
+
+const intialState = { firstName: "", lastName: "", email: "" };
+
+const reducer = (state, action) => {};
 
 const SignUpForm = () => {
   const [firstName, setFirstName] = React.useState("");
