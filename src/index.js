@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BookingProvider } from "./components/BookingContext";
 
 import App from "./components/App";
 import { SeatProvider } from "./components/SeatContext";
@@ -7,8 +8,10 @@ import { SeatProvider } from "./components/SeatContext";
 const rootElement = document.getElementById("root");
 
 ReactDOM.render(
-  <SeatProvider>
-    <App />
-  </SeatProvider>,
+  <BookingProvider>
+    <SeatProvider>
+      <App />
+    </SeatProvider>
+  </BookingProvider>,
   rootElement
 );
