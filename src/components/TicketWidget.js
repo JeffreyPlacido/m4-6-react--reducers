@@ -1,19 +1,15 @@
-import SeatAvailable from "../assets/seat-available.svg";
 import React, { useContext } from "react";
 import styled from "styled-components";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { getRowName, getSeatNum } from "../helpers";
+import { getRowName } from "../helpers";
 import { range } from "../utils";
-
 import { SeatContext } from "./SeatContext";
-
-import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css";
+import Seat from "./Seat";
 
 const TicketWidget = () => {
   const {
-    state: { numOfRows, seatsPerRow, hasLoaded, seats },
+    state: { numOfRows, seatsPerRow, hasLoaded },
   } = useContext(SeatContext);
 
   if (hasLoaded) {
@@ -26,34 +22,9 @@ const TicketWidget = () => {
               <RowLabel>Row {rowName}</RowLabel>
 
               {range(seatsPerRow).map((seatIndex) => {
-                const seatNum = getSeatNum(seatIndex);
-                const seatID = `${rowName}-${seatNum}`;
-                const isAvailable = seats[seatID];
-                const toolTipContent = isAvailable
-                  ? `Row ${rowName}, Seat ${seatNum} - ${isAvailable.price}`
-                  : "Unavailable";
-
                 return (
-                  <SeatWrapper key={seatID}>
-                    <Tippy content={toolTipContent}>
-                      <Seat
-                        src={SeatAvailable}
-                        isAvailable={isAvailable}
-                        rowIndex={rowIndex}
-                        seatIndex={seatIndex}
-                        width={36}
-                        height={36}
-                        price={isAvailable.price}
-                        status={
-                          isAvailable.isBooked ? "unavailable" : "available"
-                        }
-                        style={{
-                          filter: isAvailable.isBooked
-                            ? "grayscale(100%)"
-                            : "sepia(100%)",
-                        }}
-                      />
-                    </Tippy>
+                  <SeatWrapper key={seatIndex}>
+                    <Seat rowName={rowName} seatIndex={seatIndex} />
                   </SeatWrapper>
                 );
               })}
@@ -100,13 +71,8 @@ const RowLabel = styled.div`
   left: -80px;
 `;
 
-const SeatWrapper = styled.button`
+const SeatWrapper = styled.div`
   padding: 5px;
-`;
-
-const Seat = styled.img`
-  cursor: pointer;
-  filter: ${(props) => (!props.isAvailable ? "grayscale(100%)" : "")};
 `;
 
 export default TicketWidget;
